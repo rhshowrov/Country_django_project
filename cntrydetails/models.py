@@ -51,15 +51,14 @@ class Country(models.Model):
     class DrivingSide(models.TextChoices):
         LEFT = 'left', 'Left'
         RIGHT = 'right', 'Right'
+    # Names
+    common_name = models.CharField(max_length=100)
+    official_name = models.CharField(max_length=200)
 
     # Core identifiers
     cca2 = models.CharField(max_length=2, primary_key=True)  
     cca3 = models.CharField(max_length=3, unique=True)       
     ccn3 = models.CharField(max_length=3, null=True, blank=True)
-    
-    # Names
-    common_name = models.CharField(max_length=100)
-    official_name = models.CharField(max_length=200)
     
     # Status
     independent = models.BooleanField(default=False)
