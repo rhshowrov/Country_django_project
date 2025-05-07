@@ -1,4 +1,4 @@
-from .models import Country
+from .models import Country,Language,CountryLanguage
 from .serializers import CountryListSerializer,CountryDetailsSerializer,CountrySerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -57,7 +57,6 @@ class DeleteCountry(GenericAPIView):
 
 class SameRegionalCountry(generics.ListAPIView):
     lookup_field='common_name'
-
     def get_object(self):
         return get_object_or_404(Country,common_name__iexact=self.kwargs.get(self.lookup_field))
     
@@ -75,5 +74,26 @@ class SameRegionalCountry(generics.ListAPIView):
         return Response({
             "region":country.region.name,
             "subregion":country.subregion.name,
+            "countries":countries
+        })    
+
+#api view for same Language Country
+class SameLanguageCountry(generics.ListAPIView):
+    lookup_field='language'
+    def get_object(self):
+        language=get_object_or_404(Language,name__iexact=self.kwargs.get(self.lookup_field))
+        return language
+    
+    def get_queryset(self):
+        language=self.get_object()
+        queryset=CountryLanguage.objects.filter(language=language)
+        return queryset
+    
+    #overriding list to modify response
+    def list(self,request,*args,**kwargs):
+        language=self.get_object()
+        countries=self.get_queryset().values_list('country__common_name', flat=True)
+        return Response({
+            "language":language.name,
             "countries":countries
         })    
