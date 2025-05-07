@@ -6,7 +6,6 @@ from rest_framework import status
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
 from .serializers import CreateUpdateCountrySerializer
-# Create your views here.
 
 #list of all Country
 class CountryList(APIView):
@@ -74,7 +73,7 @@ class SameRegionalCountry(generics.ListAPIView):
         return Response({
             "region":country.region.name,
             "subregion":country.subregion.name,
-            "countries":countries
+            "countries":list(countries)
         })    
 
 #api view for same Language Country
@@ -95,5 +94,30 @@ class SameLanguageCountry(generics.ListAPIView):
         countries=self.get_queryset().values_list('country__common_name', flat=True)
         return Response({
             "language":language.name,
-            "countries":countries
+            "countries":list(countries)
         })    
+
+
+#Partial Country Search Result
+from rest_framework.decorators import api_view
+@api_view(['GET'])
+def CountrySearch(request):
+    if request.method=="GET":
+        search_query=request.query_params.get('q','')
+        if search_query:
+            countries=Country.objects.filter(common_name__icontains=search_query).values_list('common_name',flat=True)
+            if countries:
+                return Response({
+                    "Search_query": search_query,
+                    "Results": list(countries)
+                }, status=status.HTTP_200_OK)
+        # No matches found
+            return Response({
+                "Search_query": search_query,
+                "Results": []
+            }, status=status.HTTP_200_OK)
+        # If no query is provided
+        return Response({
+            "message": "Please provide a search query."
+        }, status=status.HTTP_400_BAD_REQUEST)
+

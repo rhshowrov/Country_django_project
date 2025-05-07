@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import CountryList,CountryDetails,CreateCountry, \
-UpdateCountryDetails,DeleteCountry,SameRegionalCountry,SameLanguageCountry
+UpdateCountryDetails,DeleteCountry,SameRegionalCountry,SameLanguageCountry,CountrySearch
 urlpatterns = [
     path('list/all/',CountryList.as_view(),name='country_list'),
     path('<str:common_name>/details/',CountryDetails.as_view(),name='country_details'),
@@ -9,5 +9,6 @@ urlpatterns = [
     path('delete/<str:common_name>/',DeleteCountry.as_view(),name='country_delete'),
     path('<str:common_name>/same_region_country/',SameRegionalCountry.as_view(),name='same_regional_country'),
     path('<str:language>/same_spoken_country/',SameLanguageCountry.as_view(),name='same_spoken_country'),
+    path('search/',CountrySearch, name='country-search'),
 
 ]   
