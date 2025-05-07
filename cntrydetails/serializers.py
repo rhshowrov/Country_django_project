@@ -216,7 +216,7 @@ class CountryDetailsSerializer(serializers.ModelSerializer):
         
 
 
-class CreateCountrySerializer(serializers.ModelSerializer):
+class CreateUpdateCountrySerializer(serializers.ModelSerializer):
     class Meta:
         model=Country
         fields='__all__'
