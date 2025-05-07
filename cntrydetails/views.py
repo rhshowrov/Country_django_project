@@ -54,3 +54,26 @@ class DeleteCountry(GenericAPIView):
         country = self.get_object()
         country.delete()
         return Response({"success": "Deleted Successfully"}, status=status.HTTP_200_OK)
+
+class SameRegionalCountry(generics.ListAPIView):
+    lookup_field='common_name'
+
+    def get_object(self):
+        return get_object_or_404(Country,common_name__iexact=self.kwargs.get(self.lookup_field))
+    
+    def get_queryset(self):
+        country=self.get_object()
+        region=country.region
+        subregion=country.subregion
+        queryset=Country.objects.filter(region=region,subregion=subregion)
+        return queryset
+    
+    #overriding list to modify response
+    def list(self,request,*args,**kwargs):
+        country=self.get_object()
+        countries=self.get_queryset().values_list('common_name', flat=True)
+        return Response({
+            "region":country.region.name,
+            "subregion":country.subregion.name,
+            "countries":countries
+        })    

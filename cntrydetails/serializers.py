@@ -225,3 +225,4 @@ class CreateUpdateCountrySerializer(serializers.ModelSerializer):
         model=Country
         fields='__all__'
 
+
