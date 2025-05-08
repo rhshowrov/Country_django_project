@@ -1,0 +1,43 @@
+{%extends 'base.html' %}
+{% block title %}Search{% endblock %}
+{% block body %}
+    <h4 class="text-center text-black p-2 fw-bold">Search Result for "{{query}}" :</h4>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Cca2</th>
+            <th scope="col">Capital</th>
+            <th scope="col">Population</th>
+            <th scope="col">Timezone</th>
+            <th scope="col">Flag</th>
+            <th scope="col">Details</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for country in countries %}
+          <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td style="width: 25%;">{{country.common_name}}</td>
+            <td>{{country.cca2}}</td>
+            <td>{{country.capital.name}}</td>
+            <td>{{country.population}}</td>
+            <!-- Timezones: loop through related timezones -->
+            <td class="w-25">
+                {% for tz in country.timezones.all %}
+                    {{ tz.name }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    N/A
+                {% endfor %}
+            </td>
+            <td><img style="width: 70px; height: 50px;" class="img-thumbnail" src={{country.flag.png}} alt="flag image"></td>
+            <td>
+                <a href="{% url 'cntryinfo:country_details' country.pk %}" class="btn btn-sm btn-outline-primary">Details</a>
+              </td>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+
+    {% endblock %}

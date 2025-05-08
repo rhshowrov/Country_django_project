@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Country Details{% endblock %}
+
+{% block body %}
+<h4 class="text-center text-black p-2 fw-bold border-bottom">Details for {{ country.common_name }}</h4>
+
+<div class="mb-3">
+  <p><strong>Region:</strong> 
+    <span class="badge text-bg-primary fs-6">{{ country.region }}</span>
+  </p>
+</div>
+
+<div class="mb-4">
+  <h5 class="fw-semibold">Spoken Languages:</h5>
+  <div class="d-flex flex-wrap gap-2">
+    {% for name in languages %}
+      <span class="badge text-bg-success fs-6">{{ name }}</span>
+    {% empty %}
+      <span class="text-muted">No language data available.</span>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="mb-4">
+  <h5 class="fw-semibold">Other Countries in {{ country.region }}:</h5>
+  <div class="d-flex flex-wrap gap-2">
+    {% for cname in countries %}
+      <span class="badge text-bg-info">{{ cname }}</span>
+    {% empty %}
+      <span class="text-muted">No other countries in this region.</span>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}
+
