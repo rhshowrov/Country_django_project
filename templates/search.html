@@ -1,7 +1,7 @@
 {%extends 'base.html' %}
 {% block title %}Search{% endblock %}
 {% block body %}
-    <h4 class="text-center text-black p-2 font-bold">Search Result for "{{query}}" :</h4>
+    <h4 class="text-center text-black p-2 fw-bold">Search Result for "{{query}}" :</h4>
     <table class="table table-striped">
         <thead>
           <tr>
@@ -12,6 +12,7 @@
             <th scope="col">Population</th>
             <th scope="col">Timezone</th>
             <th scope="col">Flag</th>
+            <th scope="col">Details</th>
           </tr>
         </thead>
         <tbody>
@@ -31,6 +32,9 @@
                 {% endfor %}
             </td>
             <td><img style="width: 70px; height: 50px;" class="img-thumbnail" src={{country.flag.png}} alt="flag image"></td>
+            <td>
+                <a href="{% url 'cntryinfo:country_details' country.pk %}" class="btn btn-sm btn-outline-primary">Details</a>
+              </td>
           </tr>
           {%endfor%}
         </tbody>
