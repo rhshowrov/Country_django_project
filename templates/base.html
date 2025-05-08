@@ -12,18 +12,18 @@
         <h1 class="text-center">Project Country</h1>
         <hr>
         <div class="d-flex justify-content-between">
-            <a class='btn btn-success' href="#" target="_blank" rel="noopener noreferrer">Home</a>
-            <form class="d-flex" role="search" method="GET" action="#">
+            <a class='btn btn-success' href="{%url 'cntryinfo:homepage' %}"  ">Home</a>
+            <form class="d-flex" role="search" method="GET" action="{% url 'cntryinfo:search' %}">
                 <input class="form-control me-2" type="search" name="q" placeholder="Search..." aria-label="Search">
                 <button class="btn btn-primary" type="submit">Search</button>
               </form>              
-            <a class="btn btn-warning" href="#" target="_blank" rel="noopener noreferrer">Login</a>
+            <a class="btn btn-warning" href="#" >Login</a>
         </div>
         
   </div>
   <div class="container mt-4  border rounded ">
     {% block body %}
-    <h4 class="text-center">Country Details Table:</h4>
+    <h4 class="text-center text-black p-2 font-bold">Country Details Table:</h4>
     <table class="table table-striped">
         <thead>
           <tr>
