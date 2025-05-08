@@ -6,15 +6,17 @@ from rest_framework import status
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
 from .serializers import CreateUpdateCountrySerializer
-
+from rest_framework.permissions import IsAuthenticated
 #list of all Country
 class CountryList(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self,request,*args,**kwargs):
         countrylist=Country.objects.all()
         serializer=CountryListSerializer(instance=countrylist,many=True)
         return Response(serializer.data)
 
 class CountryDetails(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Country.objects.all()
     serializer_class = CountryDetailsSerializer
 
@@ -24,6 +26,7 @@ class CountryDetails(generics.RetrieveAPIView):
     
 #use this for browsable form in the browser
 class CreateCountry(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Country.objects.all()
     serializer_class = CreateUpdateCountrySerializer
 
@@ -32,6 +35,7 @@ class CreateCountry(generics.CreateAPIView):
 class UpdateCountryDetails(generics.RetrieveUpdateAPIView):
     queryset=Country.objects.all()
     serializer_class=CreateUpdateCountrySerializer
+    permission_classes = [IsAuthenticated]
     lookup_field = 'common_name'
     #for accessing name with anytype letter
     def get_object(self):
@@ -46,6 +50,7 @@ from rest_framework.generics import GenericAPIView
 class DeleteCountry(GenericAPIView):
     queryset=Country.objects.all()
     serializer_class=CountrySerializer
+    permission_classes = [IsAuthenticated]
     lookup_field='common_name'
     def get_object(self):
         return get_object_or_404(Country,common_name__iexact=self.kwargs.get(self.lookup_field))
@@ -56,6 +61,7 @@ class DeleteCountry(GenericAPIView):
 
 class SameRegionalCountry(generics.ListAPIView):
     lookup_field='common_name'
+    permission_classes = [IsAuthenticated]
     def get_object(self):
         return get_object_or_404(Country,common_name__iexact=self.kwargs.get(self.lookup_field))
     
@@ -78,6 +84,7 @@ class SameRegionalCountry(generics.ListAPIView):
 
 #api view for same Language Country
 class SameLanguageCountry(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
     lookup_field='language'
     def get_object(self):
         language=get_object_or_404(Language,name__iexact=self.kwargs.get(self.lookup_field))
@@ -99,8 +106,9 @@ class SameLanguageCountry(generics.ListAPIView):
 
 
 #Partial Country Search Result
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def CountrySearch(request):
     if request.method=="GET":
         search_query=request.query_params.get('q','')
