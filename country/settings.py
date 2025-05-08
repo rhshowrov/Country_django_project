@@ -51,12 +51,20 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+#changes are made here
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',  # Enables the web form
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',  
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  
     ]
 }
+
 ROOT_URLCONF = 'country.urls'
 TEMPLATES_DIR = BASE_DIR / "templates"
 TEMPLATES = [
@@ -133,7 +141,6 @@ STATIC_ROOT=BASE_DIR /'staticfiles'
 MEDIA_ROOT=BASE_DIR/'media'
 MEDIA_DIR=BASE_DIR/'media'
 MEDIA_URL='/media/'
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
