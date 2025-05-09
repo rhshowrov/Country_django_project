@@ -44,7 +44,7 @@ pip install -r requirements.txt
 - sqlparse==0.5.3
 - tzdata==2025.2
 - urllib3==2.4.0
-
+## Need internet to see country flag image and also for Bootstrap5 styling
 > Make sure these versions match for compatibility.
 
 ---
